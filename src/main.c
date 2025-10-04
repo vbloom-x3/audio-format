@@ -9,49 +9,10 @@
 //  - Rice coding for residuals
 //  - frame-based, bit-packed, aligned
 
-// Annotated hex-dump:
-
-// -----------------------------
-// Example BLOS file annotated hex
-// -----------------------------
-
-// 00000000: 42 4C 4F 53   D4 AC 00 00   30 79 0A 01  02 00 02 00
-//           ^^^^           ^^^^          ^^ ^^ ^^ ^^
-//           "BLOS" magic   unknown      sample rate (little-endian)
-
-// 00000010: 00 3D 85 00   00 00 02 00   00 04 00 00  00 00 00 00
-//           ^^^^           ^^^^
-//           total frames   ????
-
-// 00000020: FF FF 02 00   01 00 FF FF   01 00 00 00  3B 77 B6 E3
-//           ^^^^           ^^^^
-//           channels?      frame size?
-
-// 00000030: DD 2C E7 BF   68 20 0E 55   95 AC C3 BF  93 3A 45 B6
-//           ^^^^^^^^^^^^^^^^
-//           LPC coefficients (double float?)
-
-// 00000040: 99 63 9E 3F   7E 35 15 E1   56 E7 81 3F  D4 53 0E AF
-//           ^^^^^^^^^^^^^^^^
-//           residuals / seeds
-
-// 00000050: B8 29 F5 BF   0F 6A 4A FF   72 9E F0 BF  A5 9C A6 0E
-//           ^^^^^^^^^^^^^^^^
-//           more residuals / seeds
-
-// 00000060: 4F 1C DA BF   8C 74 EB CA   37 97 A3 BF  18 40 00 00
-//           ^^^^^^^^^^^^^^^^
-//           more residuals
-
-// 00000070: 00 0C 20 00   00 00 01 0C   00 02 18 00  01 00 0C 00
-//           ^^^^^^^^^^^^^^^^
-//           header / alignment / padding
-
-// 00000080: 00 00 86 19   86 4C 00 21   90 C0 C0 21  84 C0 20 00
-//           ^^^^^^^^^^^^^^^^
-//           more doubles / residuals
-
-// The next section is by an A.G.I. chatbot, will be refined later or changed as per needs.
+// 00000000: 42 4C 4F 53   44 AC 00 00   30 79 0A 01  02 00 02 00
+//            'B' 'L' 'O' 'S'   sr=44100 (0x0000AC44)  total_frames (0x010A7930)
+//            channels=2     frame_size=0x00000200 (512)
+// 00000010: 00 3D 85 00   00 00 00 00   ...             // number_of_frames, padding
 
 // -----------------------------
 // Global header (first 32 bytes in file)
@@ -79,29 +40,6 @@
 // -----------------------------
 // For each channel (M and S), first `order` samples are stored as int16_t (2 bytes each)
 // These initialize the reconstructed frame samples before LPC prediction begins
-
-// -----------------------------
-// LPC coefficients
-// -----------------------------
-// Each channel has `order` coefficients stored as doubles (8 bytes each)
-// Stored after seeds. Used for predicting each sample from previous reconstructed samples
-// Doubles reduce quantization error compared to float32
-
-// -----------------------------
-// Residuals (prediction errors)
-// -----------------------------
-// Stored after LPC coefficients, per sample from n=order..fsize-1
-// Each residual has a 1-bit escape flag:
-//   0 -> Rice-coded residual (using kA/kB)
-//   1 -> Raw 16-bit sample (if residual magnitude > ESCAPE_THRESHOLD)
-// Residuals + escape flags are written using the BitWriter, aligned to byte boundary
-
-// -----------------------------
-// M/S -> L/R reconstruction
-// -----------------------------
-// During decoding, M/S residuals + coefficients + seeds are used to reconstruct 
-// Mframe and Sframe sample-by-sample. Then converted to L/R samples:
-// L = M + S/2, R = M - S/2, clamped to int16_t
 
 #define _POSIX_C_SOURCE 200809L
 
@@ -385,11 +323,16 @@ static void encode_file(const char *in_wav, const char *out_blos, int max_order)
 
     // global header
     fwrite(MAGIC, 1, 4, out);
-    uint32_t sr = (uint32_t)sfinfo.samplerate; fwrite(&sr, sizeof(uint32_t), 1, out);
-    uint32_t fr = (uint32_t)frames_total; fwrite(&fr, sizeof(uint32_t), 1, out);
-    uint8_t ch = 2; fwrite(&ch, sizeof(uint8_t), 1, out);
-    uint32_t frame_sz = FRAME_SIZE; fwrite(&frame_sz, sizeof(uint32_t), 1, out);
-    uint32_t num_frames = (frames_total + FRAME_SIZE - 1) / FRAME_SIZE; fwrite(&num_frames, sizeof(uint32_t), 1, out);
+    uint32_t sr = (uint32_t)sfinfo.samplerate; 
+    fwrite(&sr, sizeof(uint32_t), 1, out);
+    uint32_t fr = (uint32_t)frames_total; 
+    fwrite(&fr, sizeof(uint32_t), 1, out);
+    uint8_t ch = 2; 
+    fwrite(&ch, sizeof(uint8_t), 1, out);
+    uint32_t frame_sz = FRAME_SIZE; 
+    fwrite(&frame_sz, sizeof(uint32_t), 1, out);
+    uint32_t num_frames = (frames_total + FRAME_SIZE - 1) / FRAME_SIZE; 
+    fwrite(&num_frames, sizeof(uint32_t), 1, out);
 
     // reusable buffers
     int maxF = FRAME_SIZE;
