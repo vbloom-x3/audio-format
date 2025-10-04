@@ -1,6 +1,6 @@
 # 🎵 BLOS Audio Codec
 
-![GitHub License](https://img.shields.io/github/license/vbloom-x3/audio-format)![Build](https://img.shields.io/badge/build-passing-brightgreen)![Platform](https://img.shields.io/badge/platform-linux%20%7C%20unix-blue)![Language](https://img.shields.io/badge/language-C-lightgrey)
+![GitHub License](https://img.shields.io/github/license/vbloom-x3/audio-format)  ![Build](https://img.shields.io/badge/build-passing-brightgreen)  ![Platform](https://img.shields.io/badge/platform-linux%20%7C%20unix-blue)!  [Language](https://img.shields.io/badge/language-C-lightgrey)
 
 **BLOS** is a minimal, experimental, **single-file audio format and codec written in C**.
 It achieves compression ratios of **5–6%** on 16-bit WAV files, while staying simple and hackable.
