@@ -73,7 +73,7 @@ To compress a raw WAV file into `.blos` format:
 
 Original waveform (`input.wav`):
 
-![Original WAV](assets/encode.png)
+![Original WAV](assets/encoded.png)
 
 ---
 
@@ -89,7 +89,7 @@ To decompress a `.blos` file back into a playable WAV:
 
 Decoded waveform (`output.wav`):
 
-![Decoded WAV](assets/decode.png)
+![Decoded WAV](assets/decoded.png)
 
 ---
 
