@@ -21,13 +21,13 @@ It’s designed as a playground for learning about **LPC, residual coding, and a
 
 ## ✨ Features
 
-* 📦 **Single C file** – no external dependencies beyond `libsndfile` and `math`.
-* 🎚️ **LPC compression** with Levinson-Durbin algorithm.
-* 🚀 **Rice coding** for residuals.
-* 🎵 **Mid/Side stereo coding** for efficient stereo compression.
-* ⚡ **Transient bypass** for large residuals (stores raw samples when necessary).
-* 🧩 **Frame-based, bit-packed, aligned** stream format.
-* 💾 Compression ratios around **5–6%** on typical audio material.
+* **Single C file** – no external dependencies beyond `libsndfile` and `math`.
+***LPC compression** with Levinson-Durbin algorithm.
+* **Rice coding** for residuals.
+* **Mid/Side stereo coding** for efficient stereo compression.
+* **Transient bypass** for large residuals (stores raw samples when necessary).
+* **Frame-based, bit-packed, aligned** stream format.
+* Compression ratios around **5–6%** on typical audio material.
 
 ---
 
