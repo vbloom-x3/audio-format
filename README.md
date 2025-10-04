@@ -1,4 +1,4 @@
-# 🎵 BLOS Audio Codec
+# BLOS Audio Codec
 
 ![GitHub License](https://img.shields.io/github/license/vbloom-x3/audio-format)  ![Build](https://img.shields.io/badge/build-passing-brightgreen)  ![Platform](https://img.shields.io/badge/platform-linux%20%7C%20unix-blue)  ![Language](https://img.shields.io/badge/language-C-lightgrey)
 
@@ -7,7 +7,7 @@ It achieves compression ratios of **5–6%** on 16-bit WAV files, while staying 
 
 ---
 
-## ❓ Why BLOS?
+## Why BLOS?
 
 Most modern audio codecs are **big, complex, and dependency-heavy**. BLOS takes the opposite route:
 
@@ -19,7 +19,7 @@ It’s designed as a playground for learning about **LPC, residual coding, and a
 
 ---
 
-## ✨ Features
+## Features
 
 * **Single C file** – no external dependencies beyond `libsndfile` and `math`.
 ***LPC compression** with Levinson-Durbin algorithm.
@@ -31,7 +31,7 @@ It’s designed as a playground for learning about **LPC, residual coding, and a
 
 ---
 
-## 🔧 Building
+## Building
 
 Make sure you have **libsndfile** installed.
 
@@ -59,7 +59,7 @@ This will produce the executable:
 
 ---
 
-## ▶️ Usage
+##Usage
 
 ### Encode a WAV file
 
@@ -93,7 +93,7 @@ Decoded waveform (`output.wav`):
 
 ---
 
-## 📂 File Format Overview
+## File Format Overview
 
 * **Magic**: `"BLOS"`
 * **Header**: sample rate, frame count, channel count, frame size.
@@ -106,7 +106,7 @@ Decoded waveform (`output.wav`):
 
 ---
 
-## 📊 Example Output
+## Example Output
 
 During encoding you’ll see progress and per-frame stats:
 
@@ -120,7 +120,7 @@ Encoded frame 1/1234
 
 ---
 
-## 📜 License
+## License
 
 This project is licensed under the **GNU General Public License v3.0**.
 You may redistribute and/or modify it under the terms of the GPLv3.
@@ -129,7 +129,7 @@ For details, see the [LICENSE](LICENSE) file.
 
 ---
 
-## 🌱 Notes
+## Notes
 
 * This is **experimental**—expect quirks and possible artifacts.
 * Future improvements might include entropy coding, adaptive thresholds, and better stereo handling.
